@@ -2,7 +2,7 @@
 
 ## Group Members:
 
-Alex Shao, Owen Zeng
+Alex Shao, Owen Zeng, Christine Chen
 
 # Intentions:
 
