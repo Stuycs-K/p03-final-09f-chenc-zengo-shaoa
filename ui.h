@@ -1,3 +1,5 @@
+#ifndef ui_ncurses
+#define ui_ncurses
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -11,3 +13,9 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <ncurses.h>
+
+
+void setup_ui();
+
+
+#endif
