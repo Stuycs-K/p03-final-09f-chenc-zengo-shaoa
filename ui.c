@@ -1,13 +1,10 @@
-#include <ncurses.h>
-#include <stdlib.h>
+#include "ui.h"
 
-
-int main() {
-  // Set up ncurses
+void setup_ui () {
   initscr();              // Initialize the standard window
   noecho();               // Don't display keys when they are typed
   nodelay(stdscr, true);  // Set up non-blocking input with getch()
-  curs_set(false);        // Hide the cursor
+  // curs_set(false);
 
   // Start the game loop
   int running = 1;
