@@ -14,8 +14,11 @@ This project is a chat room program where users can create and connect to multip
 + TODO: How does the user install/compile/run the program. (CHANGE THIS!!!!!)
 
 Interaction (Subject to change)
+
 	- User with client will connect by running ./client `ip-address` and connect to the server.
+
 	- User will be asked for an alias to be inputted
+
 	- User will access a chat room (Or a menu with multiple rooms when that is added, will change if we get there)
 
 ### Resources/ References:
