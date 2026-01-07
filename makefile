@@ -1,5 +1,10 @@
 PHONY: clean compile run server
 
+run: server
+	./server
+
+compile: client server
+
 client: client.o networking.o ui.o networking.h ui.h
 	@gcc client.o networking.o networking.h ui.o ui.h -o client
 
