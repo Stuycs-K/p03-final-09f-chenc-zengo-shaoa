@@ -13,6 +13,7 @@
 #include <sys/wait.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <ncurses.h>
 
 #define PORT "19230"
 #define BUFFER_SIZE 1024

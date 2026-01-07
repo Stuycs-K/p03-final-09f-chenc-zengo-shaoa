@@ -10,8 +10,8 @@ void setup_ui () {
   int running = 1;
   while (running) {
     // Check for user input
-    int input = getch();
-    while (input != ERR) {
+    int input;
+    while ((input = getch()) != ERR) {
       // Exit when the user types q
       if (input == 'q') {
         running = false;
