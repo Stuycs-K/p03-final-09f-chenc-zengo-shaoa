@@ -3,6 +3,7 @@
 
 static void sighandler(int signo) {
   if (signo == SIGINT) {
+    close(server_socket);
     exit(0);
   }
 }
@@ -10,18 +11,23 @@ static void sighandler(int signo) {
 void clientLogic(int server_socket){
   char buff[BUFFER_SIZE];
 
-  while (fgets(buff, BUFFER_SIZE, stdin)) {
-    write(server_socket, buff, strlen(buff));
-    int bytes = read(server_socket, buff, sizeof(buff));
+  int f = fork()
+  if (f == 0) {
+    // child receives msg
+    while (1) {
+      int bytes = read(server_socket, buff, sizeof(buff));
 
-    if (bytes <= 0) {
-      exit(0);
+      if (bytes <= 0) {
+        close(server_socket);
+        exit(0);
+      }
+      buff[bytes] = '\0';
+      printf("recieved: %s", buff);
     }
-    buff[bytes] = '\0';
-    printf("recieved: %s", buff);
+  } else {
+    // parent sends msg
+    write(server_socket, buff, strlen(buff));
   }
-
-  close(server_socket);
 }
 
 int main(int argc, char *argv[] ) {

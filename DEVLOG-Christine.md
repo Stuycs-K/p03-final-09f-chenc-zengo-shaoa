@@ -6,3 +6,6 @@ This document must be updated daily every time you finish a work session.
 
 ### 2024-01-06 - Basic Setup
 Added basic information to README and set up devlogs. Created files and completed networking.c and networking.h by minimally modifying prior TCP networking code.
+
+### 2024-01-07 - Basic Client + Server
+Added 
