@@ -1,5 +1,11 @@
 #include "networking.h"
 
+static void sighandler(int signo) {
+  if (signo == SIGINT) {
+    exit(0);
+  }
+}
+
 void clientLogic(int server_socket){
   char buff[BUFFER_SIZE];
 
@@ -18,6 +24,7 @@ void clientLogic(int server_socket){
 }
 
 int main(int argc, char *argv[] ) {
+  signo(SIGINT, sighandler);
   char* IP = "127.0.0.1";
   if(argc>1){
     IP=argv[1];
