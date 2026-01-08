@@ -11,3 +11,5 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <ncurses.h>
+
+void setup_ui ();
