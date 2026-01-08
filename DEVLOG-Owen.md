@@ -9,3 +9,6 @@ Made a preliminary proposal.md
 
 ### 2026-01-06 - Devlog/branching/Proposal: a period
 Add proposal to repo and change my devlog.
+
+### 2026-01-07 - UI/ncurses testing: 2 hours
+Experimenting with ncurses and 

@@ -1,5 +1,6 @@
 #ifndef ui_ncurses
 #define ui_ncurses
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
