@@ -1,6 +1,6 @@
 .PHONY: clean compile run server
 
-run: server
+run: client 
 	./client
 
 compile: client server
