@@ -29,11 +29,10 @@ int main(int argc, char *argv[] ) {
   while (1) {
     // copy into read_fds
     read_fds = all_fds;
-    if (select(max + 1, &read_fds, NULL, NULL, NULL); < 1) {
+    if (select(max + 1, &read_fds, NULL, NULL, NULL) == -1) {
       perror("select error");
       return;
     }
-
 
     if (FD_ISSET(listen_soc, &read_fds)) {
       int client_soc = server_tcp_handshake(listen_soc);

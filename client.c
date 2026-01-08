@@ -13,7 +13,10 @@ void clientLogic(int server_socket){
     FD_SET(STDIN_FILENO, &read_fds);
     FD_SET(server_socket,&read_fds);
 
-    select(server_socket+1, &read_fds, NULL, NULL, NULL);
+    if (select(server_socket+1, &read_fds, NULL, NULL, NULL) == -1) {
+      perror("select error");
+      return;
+    }
 
     // fgets for stdin (send msg to server)
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
@@ -41,7 +44,7 @@ int main(int argc, char *argv[] ) {
   if(argc>1){
     IP=argv[1];
   }
-  //setup_ui();
+  setup_ui();
   int server_socket = client_tcp_handshake(IP);
   printf("client connected.\n");
   clientLogic(server_socket);
