@@ -22,5 +22,5 @@ Interaction (Subject to change)
 - User will access a chat room (Or a menu with multiple rooms when that is added, will change if we get there)
 
 ### Resources/ References:
-
+ncurses help: https://www.codestudy.net/blog/how-to-get-ctrl-shift-or-alt-with-getch-ncurses/#how-ncurses-handles-key-presses-beyond-ascii
 + TODO: list here(CHANGE THIS!!!!!)
