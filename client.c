@@ -1,4 +1,5 @@
 #include "networking.h"
+#include "ui.h"
 
 static void sighandler(int signo) {
   exit(0);
