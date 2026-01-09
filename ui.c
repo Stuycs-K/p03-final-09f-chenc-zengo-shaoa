@@ -8,7 +8,7 @@ void init_ui() {
 }
 
 void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count) { // setup one frame
-  clear();
+  //clear();
 
   int height, width;
   getmaxyx(stdscr, height, width);

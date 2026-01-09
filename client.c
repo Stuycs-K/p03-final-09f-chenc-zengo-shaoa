@@ -37,11 +37,13 @@ void clientLogic(int server_socket){
           write(server_socket, "\n", 1);
           input_len = 0;
           input[0] = '\0';
+					clear();
         }
       } else if (c == KEY_BACKSPACE || c == 127) { // backspace or delete
         if (input_len > 0) {
           input_len--;
           input[input_len] = '\0';
+					clear();
         }
       } else if (input_len < BUFFER_SIZE - 1) {
         input[input_len++] = c;
