@@ -1,24 +1,45 @@
-
 #include "networking.h"
 
+static void sighandler(int signo) {
+  exit(0);
+}
+
 void clientLogic(int server_socket){
+  fd_set read_fds;
   char buff[BUFFER_SIZE];
 
-  while (fgets(buff, BUFFER_SIZE, stdin)) {
-    write(server_socket, buff, strlen(buff));
-    int bytes = read(server_socket, buff, sizeof(buff));
+  while(1) {
+    FD_ZERO(&read_fds);
+    FD_SET(STDIN_FILENO, &read_fds);
+    FD_SET(server_socket,&read_fds);
 
-    if (bytes <= 0) {
-      exit(0);
+    if (select(server_socket+1, &read_fds, NULL, NULL, NULL) == -1) {
+      perror("select error");
+      return;
     }
-    buff[bytes] = '\0';
-    printf("recieved: %s", buff);
-  }
 
-  close(server_socket);
+    // fgets for stdin (send msg to server)
+    if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+      fgets(buff, sizeof(buff), stdin);
+      write(server_socket, buff, strlen(buff));
+    }
+
+    // socket (receive msg)
+    if (FD_ISSET(server_socket, &read_fds)) {
+      int bytes = read(server_socket, buff, sizeof(buff));
+
+      if (bytes <= 0) {
+        close(server_socket);
+        exit(0);
+      }
+      buff[bytes] = '\0';
+      printf("recieved: %s", buff);
+    }
+  }
 }
 
 int main(int argc, char *argv[] ) {
+  signal(SIGINT, sighandler);
   char* IP = "127.0.0.1";
   if(argc>1){
     IP=argv[1];
