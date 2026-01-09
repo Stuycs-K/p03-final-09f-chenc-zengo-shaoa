@@ -102,4 +102,4 @@ int main(int argc, char *argv[] ) {
   init_ui(); // initialize ncurses
   printf("client connected.\n");
   clientLogic(server_socket);
-
+}

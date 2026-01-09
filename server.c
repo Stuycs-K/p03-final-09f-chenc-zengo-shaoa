@@ -1,11 +1,9 @@
 #include "networking.h"
 
-int main(){
 void subserver_logic(int client_soc, int listen_soc, fd_set *all_fds, int max) {
   char buff[BUFFER_SIZE];
   int bytes = read(client_soc, buff, sizeof(buff));
 
-	return 0;
   if (bytes <= 0) {
     close(client_soc);
     FD_CLR(client_soc, all_fds);
