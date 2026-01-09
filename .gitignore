@@ -50,3 +50,8 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Binary Executables Associated With Project
+server
+client
+*.out
