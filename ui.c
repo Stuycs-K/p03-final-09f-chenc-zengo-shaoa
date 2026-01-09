@@ -1,4 +1,6 @@
+
 #include "ui.h"
+
 
 void draw_chat(){
   int height, width;
@@ -39,32 +41,54 @@ void draw_chat(){
 
 }
 
+int addnull(int i, char *s){
+	s[i] = '\n';
+	return i--;
+}
 
 void setup_ui() {
-  initscr();             // Initialize the standard window
-  noecho();              // Don't display keys when they are typed
-  nodelay(stdscr, true); // Set up non-blocking input with getch()
-  // curs_set(false);
+	initscr();						// Initialize the standard window
+	noecho();							// Don't display keys when they are typed
+	nodelay(stdscr, true);// Set up non-blocking input with getch()
+	char input_buff[2048];
+	char *type_prompt = "> please Input text here";
+	char *pbar;
+	int m_size = 0; // size of the current message
+	int curpos; // position of the cursor on the current message
+	// curs_set(false);
 
-  // Start the game loop
-  int running = 1;
-  while (running) {
-    // Check for user input
-    int input;
-    while ((input = getch()) != ERR) {
-      // Exit when the user types q
-      if (input == 'KEY_RESIZE') {
-        clear();
-      }
+	// Start the game loop
+	int running = 1;
+	while (running) {
+		// Check for user input
+		int input;
+		while ((input = getch()) != ERR) {
+			// Exit when the user types q
+			if (input == KEY_BACKSPACE && curpos > 0) {
+				m_size = addnull(m_size-1, input_buff);
+				curpos --;
+			}	else if (input < 'Z' && input > 'A'){
+				input_buff[m_size] = (char) input;
+				m_size++;
+				addnull(m_size + 1, input_buff);
+				curpos ++;
+			}else if (input < 'z' && input > 'a'){
+				input_buff[m_size] = (char) input;
+				m_size ++;
+				addnull(m_size + 1, input_buff);
+				curpos ++;
+			}
 
-      // Get the next user input
-      input = getch();
-    }
+		// Get the next user input
+			input = getch();
+		}
 
+		//clear();
 
+		draw_chat();
 
-    draw_chat();
-  }
+	}
 
-  endwin();
+	endwin();
+
 }
