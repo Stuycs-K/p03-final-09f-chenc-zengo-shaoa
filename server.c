@@ -1,34 +1,50 @@
 #include "networking.h"
 
-void subserver_logic(int client_socket){
-  while (1) {
-    char buff[BUFFER_SIZE];
-    int bytes = read(client_socket, buff, sizeof(buff));
+void subserver_logic(int client_soc, fd_set *all_fds) {
+  char buff[BUFFER_SIZE];
+  int bytes = read(client_soc, buff, sizeof(buff));
 
-    if (bytes <= 0) {
-      exit(0);
-    }
-    buff[bytes] = '\0';
-    rot13(buff);
-    write(client_socket, buff, bytes);
+  if (bytes <= 0) {
+    close(client_soc);
+    FD_CLR(client_soc, all_fds);
+    return;
   }
+  buff[bytes] = '\0';
 
-  close(client_socket);
-  exit(0);
+  // FD_SETSIZE = max fd count select supports
+  for (int fd = 0; fd < FD_SETSIZE; fd++) {
+    if (FD_ISSET(fd, all_fds) && fd != client_soc) { // send to currently tracking sockets
+      write(fd, buff, bytes);
+    }
+  }
 }
 
 int main(int argc, char *argv[] ) {
   int listen_soc = server_setup();
+  fd_set read_fds, all_fds;
+  FD_ZERO(&all_fds);
+  FD_SET(listen_soc, &all_fds);
+  int max = listen_soc; // track for select call
+
   while (1) {
+    // copy into read_fds
+    read_fds = all_fds;
+    if (select(max + 1, &read_fds, NULL, NULL, NULL) == -1) {
+      perror("select error");
+      return;
+    }
 
-    int client_soc = server_tcp_handshake(listen_soc);
-
-    int f = fork();
-    if (f == 0) { // child
-      close(listen_soc);
-      subserver_logic(client_soc);
-    } else {
-      close(client_soc);
+    if (FD_ISSET(listen_soc, &read_fds)) {
+      int client_soc = server_tcp_handshake(listen_soc);
+      FD_SET(client_soc, &all_fds); // add neww connected client socket to all_fds
+      if (client_soc > max) {
+        max = client_soc;
+      }
+    }
+    for (int fd = 0; fd <= max; fd++) {
+      if (fd != listen_soc && FD_ISSET(fd, &read_fds)) {
+        subserver_logic(fd, &all_fds);
+      }
     }
   }
 }
