@@ -7,15 +7,7 @@ void init_ui() {
   // curs_set(false);
 }
 
-int setup_ui() { // setup one frame
-  int input;
-  while ((input = getch()) != ERR) {
-    // Exit when the user types q
-    if (input == 'q') {
-      return 0;
-    }
-  }
-
+void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count) { // setup one frame
   clear();
 
   int height, width;
@@ -37,8 +29,16 @@ int setup_ui() { // setup one frame
 
   mvprintw(1, 2, " Chat History ");
 
-  mvprintw(2, 2, "User1: Thing");
-  mvprintw(3, 2, "User2: Wise?");
+  int start;
+  int max = chat_height - 3;
+  if (chat_count > max) {
+    start = 0;
+  } else {
+    start = chat_count - max;
+  }
+  for (int i = start; i < chat_count; i++) {
+    mvprintw(2 + i - start, 2, "%s", chat[i]);
+  }
 
   mvhline(chat_height + 2, 1, 0, width - 2);
   mvvline(chat_height + 1, 0, 0, 1);
@@ -50,10 +50,10 @@ int setup_ui() { // setup one frame
   mvaddch(chat_height + 2, width - 1, ACS_LRCORNER);
 
   mvprintw(chat_height, 2, " Message Input ");
-  mvprintw(chat_height + 1, 2, "> Type here...");
+
+  mvprintw(chat_height + 1, 2, "> %s", input);
 
   refresh();
-  return 1; // continue
 }
 
 void end_ui() {
