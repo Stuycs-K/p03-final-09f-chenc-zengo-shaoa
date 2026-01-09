@@ -1,5 +1,6 @@
 
 #include "networking.h"
+#include "ui.h"
 
 void clientLogic(int server_socket){
   char buff[BUFFER_SIZE];

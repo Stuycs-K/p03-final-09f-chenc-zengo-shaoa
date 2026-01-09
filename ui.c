@@ -9,8 +9,10 @@ void setup_ui() {
 	initscr();						// Initialize the standard window
 	noecho();							// Don't display keys when they are typed
 	nodelay(stdscr, true);// Set up non-blocking input with getch()
+	curs_set(0);
 	char input_buff[2048];
-	char *type_prompt = "> please Input text here";
+	memset(input_buff, 0, sizeof(input_buff));
+	char *type_prompt = "Enter message here";
 	char *pbar;
 	int m_size = 0; // size of the current message
 	int curpos; // position of the cursor on the current message
@@ -24,16 +26,12 @@ void setup_ui() {
 		while ((input = getch()) != ERR) {
 			// Exit when the user types q
 			if (input == KEY_BACKSPACE && curpos > 0) {
-				m_size = addnull(m_size-1, input_buff);
+				addnull(m_size-1, input_buff);
+				m_size--;
 				curpos --;
-			}	else if (input < 'Z' && input > 'A'){
+			}	else if (input >= ' ' && input <= '~'){
 				input_buff[m_size] = (char) input;
 				m_size++;
-				addnull(m_size + 1, input_buff);
-				curpos ++;
-			}else if (input < 'z' && input > 'a'){
-				input_buff[m_size] = (char) input;
-				m_size ++;
 				addnull(m_size + 1, input_buff);
 				curpos ++;
 			}
@@ -43,6 +41,8 @@ void setup_ui() {
 		}
 
 		//clear();
+		if(m_size == 1) pbar = type_prompt;
+		else pbar = input_buff;
 
 		int height, width;
 		getmaxyx(stdscr, height, width);
@@ -72,13 +72,10 @@ void setup_ui() {
 		mvaddch(chat_height, width - 1, ACS_RTEE);
 		mvaddch(chat_height + 2, 0, ACS_LLCORNER);
 		mvaddch(chat_height + 2, width - 1, ACS_LRCORNER);
-		if(m_size == 0){
-			pbar = type_prompt;
-		}else{
-			pbar = input_buff;
-		}
 		mvprintw(chat_height, 2, " Message Input ");
-		mvprintw(chat_height + 1, 2, pbar);
+
+
+		mvprintw(chat_height + 1, 2,"> %s", pbar);
 		refresh();
 
 	}
