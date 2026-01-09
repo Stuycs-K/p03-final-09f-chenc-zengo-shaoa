@@ -14,8 +14,8 @@
 #include <netdb.h>
 #include <ncurses.h>
 
-
-void setup_ui();
-
+void init_ui();
+int setup_ui();
+void end_ui();
 
 #endif

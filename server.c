@@ -1,6 +1,6 @@
 #include "networking.h"
 
-void subserver_logic(int client_soc, int listen_soc, fd_set *all_fds) {
+void subserver_logic(int client_soc, int listen_soc, fd_set *all_fds, int max) {
   char buff[BUFFER_SIZE];
   int bytes = read(client_soc, buff, sizeof(buff));
 
@@ -11,8 +11,7 @@ void subserver_logic(int client_soc, int listen_soc, fd_set *all_fds) {
   }
   buff[bytes] = '\0';
 
-  // FD_SETSIZE = max fd count select supports
-  for (int fd = 0; fd < FD_SETSIZE; fd++) {
+  for (int fd = 0; fd <= max; fd++) {
     if (FD_ISSET(fd, all_fds) && fd != client_soc && fd != listen_soc) { // send to currently tracking sockets
       write(fd, buff, bytes);
     }
@@ -43,7 +42,7 @@ int main(int argc, char *argv[] ) {
     }
     for (int fd = 0; fd <= max; fd++) {
       if (fd != listen_soc && FD_ISSET(fd, &read_fds)) {
-        subserver_logic(fd, listen_soc, &all_fds);
+        subserver_logic(fd, listen_soc, &all_fds, max);
       }
     }
   }
