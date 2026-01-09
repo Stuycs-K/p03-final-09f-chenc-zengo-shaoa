@@ -18,6 +18,7 @@ void clientLogic(int server_socket){
   // buff for typed input using getch
   char input[BUFFER_SIZE];
   int input_len = 0;
+	int cursor = 0;
 
   while(1) {
     int bytes = 0;
@@ -45,9 +46,10 @@ void clientLogic(int server_socket){
           input[input_len] = '\0';
 					clear();
         }
-      } else if (input_len < BUFFER_SIZE - 1) {
+      } else if (c >= ' ' && c <= '~' && input_len < BUFFER_SIZE - 1) {
         input[input_len++] = c;
         input[input_len] = '\0';
+				cursor++;
       }
     }
 
@@ -95,10 +97,12 @@ void clientLogic(int server_socket){
 int main(int argc, char *argv[] ) {
   signal(SIGINT, sighandler);
   char* IP = "127.0.0.1";
-  if(argc>1){
+  if(argc>2){
     IP=argv[1];
   }
   server_socket = client_tcp_handshake(IP); // connect to server
+	for(int i = 0; i < MAX_MSG; i++)
+		memset(chat[MAX_MSG], 0, MAX_MSG_LEN);
   init_ui(); // initialize ncurses
   printf("client connected.\n");
   clientLogic(server_socket);
