@@ -12,3 +12,6 @@ This document must be updated daily every time you finish a work session.
 
 ### 2026-01-07 - Research on nCurses, created makefile
 	Made makefile, added all current plans to it. Also did some work on looking into nCurses
+
+### 2026-01-08 - Work on input & ui
+	ui.c input arguments and more
