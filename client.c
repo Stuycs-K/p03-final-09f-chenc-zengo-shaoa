@@ -1,6 +1,9 @@
 #include "networking.h"
 
+int server_socket;
+
 static void sighandler(int signo) {
+  close(server_socket);
   exit(0);
 }
 
@@ -20,7 +23,10 @@ void clientLogic(int server_socket){
 
     // fgets for stdin (send msg to server)
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-      fgets(buff, sizeof(buff), stdin);
+      if (fgets(buff, sizeof(buff), stdin) == NULL) {
+        close(server_socket);
+        exit(0);
+      }
       write(server_socket, buff, strlen(buff));
     }
 
@@ -33,7 +39,7 @@ void clientLogic(int server_socket){
         exit(0);
       }
       buff[bytes] = '\0';
-      printf("recieved: %s", buff);
+      printf("received: %s", buff);
     }
   }
 }
@@ -44,8 +50,8 @@ int main(int argc, char *argv[] ) {
   if(argc>1){
     IP=argv[1];
   }
-  setup_ui();
-  int server_socket = client_tcp_handshake(IP);
+  //setup_ui();
+  server_socket = client_tcp_handshake(IP);
   printf("client connected.\n");
   clientLogic(server_socket);
 }
