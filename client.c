@@ -28,7 +28,7 @@ void clientLogic(int server_socket){
 		// keyboard input using ncurses
 		int c = getch();
 		if (c != ERR) {
-			if (c == 27) {
+			if (c == 9) { // tab as escape sequence
 				clear();
 				end_ui();
 				close(server_socket);
@@ -46,6 +46,7 @@ void clientLogic(int server_socket){
 			} else if (c == KEY_BACKSPACE || c == 127) { // backspace or delete
 				if (input_len > 0) {
 					input_len--;
+					cursor --;
 					input[input_len] = '\0';
 					clear();
 				}

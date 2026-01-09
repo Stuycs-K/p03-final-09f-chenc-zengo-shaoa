@@ -4,7 +4,7 @@ void init_ui() {
 	initscr();						 // Initialize the standard window
 	noecho();							// Don't display keys when they are typed
 	nodelay(stdscr, true); // Set up non-blocking input with getch()
-	// curs_set(false);
+	curs_set(true);
 }
 void ui_elements(int height, int width, int chat_height){
 	mvhline(1, 1, 0, width - 2);
@@ -41,20 +41,23 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count) { // setup 
 	int chat_height = height - 8;
 	int max = chat_height - 3;
 	ui_elements(height, width, chat_height);
+	move(10, 10);
 
-	mvprintw(1, 2, " Chat History chat count: %d", chat_count);
-	if (chat_count > max) start = 0;
+	mvprintw(1, 2, " Chat History ");
+	if (chat_count < max) start = 0;
 	else start = chat_count - max;
 
 	for (int i = start; i < chat_count; i++) {
 		mvprintw(2 + i - start, 2, "%s", chat[i]);
 	}
+/*
+	*/
 
 	mvprintw(chat_height, 2, " Message Input ");
 
-	mvprintw(chat_height + 1, 2, "> %s", input);
-	mvprintw( height	- 5, 2, "Debug: c_count: %d", chat_count);
+	mvprintw( height	- 5, 2, "Debug: chat_count: %d", chat_count);
 
+	mvprintw(chat_height + 1, 2, "> %s", input);
 	refresh();
 }
 
