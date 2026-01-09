@@ -14,4 +14,7 @@ This document must be updated daily every time you finish a work session.
 	Made makefile, added all current plans to it. Also did some work on looking into nCurses
 
 ### 2026-01-08 - Work on input & ui
-	ui.c input arguments and more
+	Added inputs to ui 
+
+### 2026-01-09 - Ui debug, polishing
+	Removed input memory residue, organised functions in ui.c
