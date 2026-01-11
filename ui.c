@@ -1,4 +1,5 @@
 #include "ui.h"
+#include "networking.h"
 
 void init_ui() {
 	initscr();						 // Initialize the standard window
@@ -6,6 +7,9 @@ void init_ui() {
 	nodelay(stdscr, true); // Set up non-blocking input with getch()
 	curs_set(true);
 }
+
+// Helper function to implement UI structure elements on the client
+	// Does NOT include text
 void ui_elements(int height, int width, int chat_height){
 	mvhline(1, 1, 0, width - 2);
 
@@ -28,7 +32,40 @@ void ui_elements(int height, int width, int chat_height){
 	mvaddch(chat_height, width - 1, ACS_RTEE);
 	mvaddch(chat_height + 2, 0, ACS_LLCORNER);
 	mvaddch(chat_height + 2, width - 1, ACS_LRCORNER);
+}
 
+// Detects input using ncurses
+void input_detect(char *input, int *input_len, int *cursor, int server_socket){
+	int c = getch();
+	if (c != ERR) {
+		if (c == 9) { // tab as escape sequence
+			clear();
+			end_ui();
+			close(server_socket);
+			exit(0);
+		}
+		if (c == '\n') {
+			if (input_len > 0) {
+				input[*input_len] = '\0';
+				write(server_socket, input, *input_len);
+				write(server_socket, "\n", 1);
+				*input_len = 0;
+				memset(input, 0, BUFFER_SIZE);
+				clear();
+			}
+		} else if (c == KEY_BACKSPACE || c == 127) { // backspace or delete
+			if (input_len > 0) {
+				input_len--;
+				cursor --;
+				input[*input_len] = '\0';
+				clear();
+			}
+		} else if (c >= ' ' && c <= '~' && *input_len < BUFFER_SIZE - 1) {
+			input[(*input_len)++] = c;
+			input[*input_len] = '\0';
+			cursor++;
+		}
+	}
 }
 
 void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count) { // setup one frame

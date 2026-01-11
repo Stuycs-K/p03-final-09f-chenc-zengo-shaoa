@@ -2,6 +2,7 @@
 
 void subserver_logic(int client_soc, int listen_soc, fd_set *all_fds, int max) {
   char buff[BUFFER_SIZE];
+  memset(buff, 0, BUFFER_SIZE);
   int bytes = read(client_soc, buff, sizeof(buff));
 
   if (bytes <= 0) {
@@ -12,7 +13,7 @@ void subserver_logic(int client_soc, int listen_soc, fd_set *all_fds, int max) {
   buff[bytes] = '\0';
 
   for (int fd = 0; fd <= max; fd++) {
-    if (FD_ISSET(fd, all_fds) && fd != client_soc && fd != listen_soc) { // send to currently tracking sockets
+    if (FD_ISSET(fd, all_fds) && /*fd != client_soc && */fd != listen_soc) { // send to currently tracking sockets
       write(fd, buff, bytes);
     }
   }

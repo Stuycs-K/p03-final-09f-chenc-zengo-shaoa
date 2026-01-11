@@ -13,6 +13,7 @@
 #define MAX_MSG_LEN 256
 
 void init_ui();
+void input_detect(char *input, int *input_len, int *cursor, int server_socket);
 void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count);
 void end_ui();
 
