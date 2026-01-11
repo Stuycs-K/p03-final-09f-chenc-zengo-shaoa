@@ -12,7 +12,9 @@ static void sighandler(int signo) { // crtl-c handler
 }
 
 
-void selectLogic(int server_socket, fd_set *read_fds, char *buff, int *bytes){
+void selectLogic(int server_socket, fd_set *read_fds, char *buff){
+	int bytes = 0;
+
 	FD_ZERO(read_fds);
 	FD_SET(server_socket,read_fds);
 
@@ -28,18 +30,25 @@ void selectLogic(int server_socket, fd_set *read_fds, char *buff, int *bytes){
 	}
 	// socket (receive msg)
 	if (FD_ISSET(server_socket, read_fds)) {
-		*bytes = read(server_socket, buff, sizeof(buff));
-		if (*bytes <= 0) {
+		bytes = read(server_socket, buff, sizeof(buff));
+		if (bytes <= 0) {
 			end_ui();
 			close(server_socket);
+			fprintf(stderr, "Socket Read Error (Bytes read: %d)", bytes);
 			exit(0);
 		}
-		buff[*bytes] = '\0';
-		/*
-		if (*bytes == 1 && buff[0] == '\0') {
+		buff[bytes] = '\0';
+		/* What does this do? -Alex
+		if (bytes == 1 && buff[0] == '\0') {
 			continue;
 		}
 		*/
+	}
+	if (chat_count < MAX_MSG && bytes > 0) {
+		memset(chat[chat_count], 0, MAX_MSG_LEN);
+		strncpy(chat[chat_count], buff, MAX_MSG_LEN - 1);
+		chat[chat_count][MAX_MSG_LEN - 1] = '\0';
+		chat_count++;
 	}
 }
 
@@ -59,16 +68,8 @@ void clientLogic(int server_socket){
 		// INPUT DETECT: handles all inputs; see ui.c for implementation
 		input_detect(input, &input_len, &cursor, server_socket);
 
-		int bytes = 0;
 
-		selectLogic(server_socket, &read_fds, buff, &bytes);
-
-		if (chat_count < MAX_MSG && bytes > 0) {
-			memset(chat[chat_count], 0, MAX_MSG_LEN);
-			strncpy(chat[chat_count], buff, MAX_MSG_LEN - 1);
-			chat[chat_count][MAX_MSG_LEN - 1] = '\0';
-			chat_count++;
-		}
+		selectLogic(server_socket, &read_fds, buff);
 
 		setup_ui(input, chat, chat_count);
 	}

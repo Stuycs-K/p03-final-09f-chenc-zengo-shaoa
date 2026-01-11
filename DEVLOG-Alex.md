@@ -18,3 +18,6 @@ This document must be updated daily every time you finish a work session.
 
 ### 2026-01-09 - Ui debug, polishing
 	Removed input memory residue, organised functions in ui.c
+
+### 2026-01-10 - Code organisation, 
+	Split functions from client logic

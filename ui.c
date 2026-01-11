@@ -45,7 +45,7 @@ void input_detect(char *input, int *input_len, int *cursor, int server_socket){
 			exit(0);
 		}
 		if (c == '\n') {
-			if (input_len > 0) {
+			if (*input_len > 0) {
 				input[*input_len] = '\0';
 				write(server_socket, input, *input_len);
 				write(server_socket, "\n", 1);
@@ -55,7 +55,7 @@ void input_detect(char *input, int *input_len, int *cursor, int server_socket){
 			}
 		} else if (c == KEY_BACKSPACE || c == 127) { // backspace or delete
 			if (input_len > 0) {
-				input_len--;
+				(*input_len)--;
 				cursor --;
 				input[*input_len] = '\0';
 				clear();
