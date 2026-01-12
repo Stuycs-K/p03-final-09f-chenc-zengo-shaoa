@@ -76,7 +76,7 @@ char input_detect(char *input, int *input_len, int *cursor, int server_socket, c
 				return 1;
 			}
 		} else if (c == KEY_BACKSPACE || c == 127) { // backspace or delete
-			if (input_len > 0) {
+			if (*input_len > 0) {
 				(*input_len)--;
 				cursor --;
 				input[*input_len] = '\0';
