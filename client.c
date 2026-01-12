@@ -63,15 +63,20 @@ void clientLogic(int server_socket){
 	memset(input, 0, BUFFER_SIZE);
 	int cursor = 0;
 
+	char user_name[32];
+
+	while(!setup_name_page(input, &input_len, user_name, server_socket)){
+
+	}
+
 	while(1) {
 
 		// INPUT DETECT: handles all inputs; see ui.c for implementation
-		input_detect(input, &input_len, &cursor, server_socket);
-
+		input_detect(input, &input_len, &cursor, server_socket, 0);
 
 		selectLogic(server_socket, &read_fds, buff);
 
-		setup_ui(input, chat, chat_count);
+		setup_ui(input, chat, chat_count, user_name);
 	}
 
 }

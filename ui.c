@@ -34,8 +34,25 @@ void ui_elements(int height, int width, int chat_height){
 	mvaddch(chat_height + 2, width - 1, ACS_LRCORNER);
 }
 
+void create_name_page(char *input, int height, int width){
+	mvhline(height/2+1, 1, 0, width-2);
+	mvprintw(height/2, 20, " Enter username: %s", input);
+
+}
+
+char setup_name_page( char *input, int *input_len, char *name, int server_socket){
+	int height, width;
+	getmaxyx(stdscr, height, width);
+	create_name_page(input, height, width);
+	refresh();
+	strcpy(name, input);
+	char c = input_detect(input, input_len, 0, server_socket, 1);
+	return c;
+}
+
+
 // Detects input using ncurses
-void input_detect(char *input, int *input_len, int *cursor, int server_socket){
+char input_detect(char *input, int *input_len, int *cursor, int server_socket, char mode){
 	int c = getch();
 	if (c != ERR) {
 		if (c == 9) { // tab as escape sequence
@@ -46,12 +63,15 @@ void input_detect(char *input, int *input_len, int *cursor, int server_socket){
 		}
 		if (c == '\n') {
 			if (*input_len > 0) {
+				if(mode == 0){
+					write(server_socket, input, *input_len);
+					write(server_socket, "\n", 1);
+				}
 				input[*input_len] = '\0';
-				write(server_socket, input, *input_len);
-				write(server_socket, "\n", 1);
 				*input_len = 0;
 				memset(input, 0, BUFFER_SIZE);
 				clear();
+				return 1;
 			}
 		} else if (c == KEY_BACKSPACE || c == 127) { // backspace or delete
 			if (input_len > 0) {
@@ -66,9 +86,10 @@ void input_detect(char *input, int *input_len, int *cursor, int server_socket){
 			cursor++;
 		}
 	}
+	return 0;
 }
 
-void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count) { // setup one frame
+void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user) { // setup one frame
 	//clear();
 
 	int height, width;
@@ -93,6 +114,7 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count) { // setup 
 	mvprintw(chat_height, 2, " Message Input ");
 
 	mvprintw( height	- 5, 2, "Debug: chat_count: %d", chat_count);
+	mvprintw( height	- 4, 2, "User_name: %s", user);
 
 	mvprintw(chat_height + 1, 2, "> %s", input);
 	refresh();
