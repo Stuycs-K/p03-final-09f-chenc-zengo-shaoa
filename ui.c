@@ -46,13 +46,13 @@ char setup_name_page( char *input, int *input_len, char *name, int server_socket
 	create_name_page(input, height, width);
 	refresh();
 	strcpy(name, input);
-	char c = input_detect(input, input_len, 0, server_socket, 1);
+	char c = input_detect(input, input_len, 0, server_socket, 1, name);
 	return c;
 }
 
 
 // Detects input using ncurses
-char input_detect(char *input, int *input_len, int *cursor, int server_socket, char mode){
+char input_detect(char *input, int *input_len, int *cursor, int server_socket, char mode, char *user){
 	int c = getch();
 	if (c != ERR) {
 		if (c == 9) { // tab as escape sequence
@@ -64,8 +64,10 @@ char input_detect(char *input, int *input_len, int *cursor, int server_socket, c
 		if (c == '\n') {
 			if (*input_len > 0) {
 				if(mode == 0){
-					write(server_socket, input, *input_len);
-					write(server_socket, "\n", 1);
+					char send[512];
+					sprintf(send,"%s: %s\n", user, input);
+					int leng = strlen(user) + *input_len + 3;
+					write(server_socket, send, leng);
 				}
 				input[*input_len] = '\0';
 				*input_len = 0;
@@ -105,9 +107,12 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user)
 	if (chat_count < max) start = 0;
 	else start = chat_count - max;
 
+	char *thing = malloc(256);
 	for (int i = start; i < chat_count; i++) {
-		mvprintw(2 + i - start, 2, "%s", chat[i]);
+		strcpy(thing, chat[i]);
+		mvprintw(2 + i - start, 2, "%s", thing);
 	}
+	free(thing);
 /*
 	*/
 
@@ -115,6 +120,7 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user)
 
 	mvprintw( height	- 5, 2, "Debug: chat_count: %d", chat_count);
 	mvprintw( height	- 4, 2, "User_name: %s", user);
+	mvprintw( height	- 3, 2, "Start chat: %s", chat[start]);
 
 	mvprintw(chat_height + 1, 2, "> %s", input);
 	refresh();

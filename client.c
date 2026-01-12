@@ -65,14 +65,12 @@ void clientLogic(int server_socket){
 
 	char user_name[32];
 
-	while(!setup_name_page(input, &input_len, user_name, server_socket)){
-
-	}
+	// Naming the client
+	while(!setup_name_page(input, &input_len, user_name, server_socket)){}
 
 	while(1) {
-
 		// INPUT DETECT: handles all inputs; see ui.c for implementation
-		input_detect(input, &input_len, &cursor, server_socket, 0);
+		input_detect(input, &input_len, &cursor, server_socket, 0, user_name);
 
 		selectLogic(server_socket, &read_fds, buff);
 
