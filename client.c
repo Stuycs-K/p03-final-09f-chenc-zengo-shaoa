@@ -81,7 +81,7 @@ int main(int argc, char *argv[] ) {
 		IP=argv[1];
 	}
 	server_socket = client_tcp_handshake(IP); // connect to server
-	for(int i = 0; i < MAX_MSG; i++)
+	//for(int i = 0; i < MAX_MSG; i++) what is this
 	init_ui(); // initialize ncurses
 	printf("client connected.\n");
 	clientLogic(server_socket);
