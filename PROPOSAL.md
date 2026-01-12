@@ -22,7 +22,7 @@ We will use memory allocation (obviously), working with files, signal handling, 
 
 - Signals will be handled by the client to prevent ^C
 
-- The server will spawn children that connect with clients. These will exit once the client exits.
+- The server will use select() to connect with multiple clients.
 
 - Sockets will be used to connect clients with the server.
 
