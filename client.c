@@ -57,7 +57,7 @@ void clientLogic(int server_socket){
 	fd_set read_fds;
 	char buff[BUFFER_SIZE];
 
-	// buff for typed input 
+	// buff for typed input
 	char input[BUFFER_SIZE];
 	int input_len = 0;
 	memset(input, 0, BUFFER_SIZE);
@@ -84,7 +84,7 @@ void clientLogic(int server_socket){
 int main(int argc, char *argv[] ) {
 	signal(SIGINT, sighandler);
 	char* IP = "127.0.0.1";
-	if(argc>2){
+	if(argc >= 2){
 		IP=argv[1];
 	}
 	server_socket = client_tcp_handshake(IP); // connect to server
