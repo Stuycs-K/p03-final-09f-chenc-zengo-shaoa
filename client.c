@@ -38,14 +38,9 @@ void selectLogic(int server_socket, fd_set *read_fds, char *buff){
 			exit(0);
 		}
 		buff[bytes] = '\0';
-		/* What does this do? -Alex
-		if (bytes == 1 && buff[0] == '\0') {
-			continue;
-		}
-		*/
 	}
 	if (chat_count < MAX_MSG && bytes > 0) {
-		memset(chat[chat_count], 0, MAX_MSG_LEN);
+		memset(chat[chat_count], 0, MAX_MSG_LEN-1);
 		strncpy(chat[chat_count], buff, MAX_MSG_LEN - 1);
 		chat[chat_count][MAX_MSG_LEN - 1] = '\0';
 		chat_count++;
