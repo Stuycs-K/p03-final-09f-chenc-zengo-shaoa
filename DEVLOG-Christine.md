@@ -13,4 +13,8 @@ Added basic server and client with sighandler. Modified client to use fork() the
 ### 2026-01-08 - Client + UI
 Completed server using select(). Refactored ui.c into separate functions called in client and added keyboard input display logic to client.
 
-### 2026-01-09 -
+### 2026-01-09 - Minor Mods + Basic Chat History
+Modified makefile and added error checks for select(). Implemented a basic janky chat history to display messages sent from other clients.
+
+## 2026-01-11 - Fix Bug
+Fixed very minor bug fix in client that prevented clients on different machines from connecting properly.
