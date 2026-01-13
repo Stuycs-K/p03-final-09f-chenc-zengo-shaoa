@@ -51,7 +51,7 @@ void selectLogic(int server_socket, fd_set *read_fds, char *buff){
 		}
 		else if (bytes > 0) {
 			strcat(chat[chat_count], buff);
-
+			selectLogic(server_socket, read_fds, buff);
 		}
 	}
 }
