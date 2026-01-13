@@ -37,13 +37,22 @@ void selectLogic(int server_socket, fd_set *read_fds, char *buff){
 			fprintf(stderr, "Socket Read Error (Bytes read: %d)", bytes);
 			exit(0);
 		}
-		buff[bytes] = '\0';
-	}
-	if (chat_count < MAX_MSG && bytes > 0) {
-		memset(chat[chat_count], 0, MAX_MSG_LEN-1);
-		strncpy(chat[chat_count], buff, MAX_MSG_LEN - 1);
-		chat[chat_count][MAX_MSG_LEN - 1] = '\0';
-		chat_count++;
+		if(strchr(buff, '\n')){
+			buff[bytes] = '\0';
+			if (chat_count < MAX_MSG && bytes > 0) {
+				//memset(chat[chat_count], 0, MAX_MSG_LEN-1);
+				//strncpy(chat[chat_count], buff, MAX_MSG_LEN - 1);
+				strcat(chat[chat_count], buff);
+
+				chat[chat_count][MAX_MSG_LEN - 1] = '\0';
+				chat_count++;
+				memset(chat[chat_count], 0, MAX_MSG_LEN-1);
+			}
+		}
+		else if (bytes > 0) {
+			strcat(chat[chat_count], buff);
+
+		}
 	}
 }
 
@@ -51,6 +60,7 @@ void selectLogic(int server_socket, fd_set *read_fds, char *buff){
 void clientLogic(int server_socket){
 	fd_set read_fds;
 	char buff[BUFFER_SIZE];
+	memset(buff, 0, BUFFER_SIZE);
 
 	// buff for typed input
 	char input[BUFFER_SIZE];
@@ -70,6 +80,7 @@ void clientLogic(int server_socket){
 		selectLogic(server_socket, &read_fds, buff);
 
 		setup_ui(input, chat, chat_count, user_name);
+
 	}
 
 }
