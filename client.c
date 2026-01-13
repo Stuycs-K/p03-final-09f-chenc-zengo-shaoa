@@ -49,6 +49,8 @@ void clientLogic(int server_socket) {
           input[input_len] = '\0';
           clear();
         }
+      } else if (c == KEY_RESIZE) {
+        clear();
       } else if (c >= ' ' && c <= '~' && input_len < BUFFER_SIZE - 1) {
         input[input_len++] = c;
         input[input_len] = '\0';
@@ -64,6 +66,9 @@ void clientLogic(int server_socket) {
     tv.tv_usec = 10000; // 10ms
 
     if (select(server_socket + 1, &read_fds, NULL, NULL, &tv) == -1) {
+      if (errno == EINTR) {
+        continue;
+      }
       perror("select error");
       end_ui();
       close(server_socket);
@@ -92,7 +97,7 @@ void clientLogic(int server_socket) {
       chat_count++;
     }
 
-    setup_ui(input, chat, chat_count);
+    setup_ui(input, chat, chat_count, "owen");
   }
 }
 
