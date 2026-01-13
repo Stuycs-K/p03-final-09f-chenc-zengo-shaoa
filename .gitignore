@@ -51,7 +51,11 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+<<<<<<< HEAD
 # Binary Executables (Project Specific)
+=======
+# Binary Executables Associated With Project
+>>>>>>> f26ba3f60498c6c6058cb608bcf708a2d6183316
 server
 client
 *.out
