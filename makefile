@@ -1,27 +1,28 @@
 .PHONY: clean compile run
 
+CLIENT_OBJECTS = client.o networking.o ui.o message.o
+CLIENT_FILES = client.c networking.c ui.c message.c
+
+SERVER_OBJECTS = server.o networking.o message.o
+
+H_FILES = networking.h ui.h message.h
+
 run: client
 	./client
 
 compile: client server
 
-client: client.o networking.o ui.o networking.h ui.h
-	@gcc client.o networking.o ui.o -o client -lncurses
+client: $(CLIENT_OBJECTS)
+	@gcc $(CLIENT_OBJECTS) -o client -lncurses
 
-server: server.o networking.o networking.h
-	@gcc server.o networking.o -o server
+server: $(SERVER_OBJECTS)
+	@gcc $(SERVER_OBJECTS) -o server
 
 server.o: server.c
 	@gcc -c -Wall server.c
 
-client.o: client.c
-	@gcc -c -Wall client.c
-
-networking.o: networking.c
-	@gcc -c -Wall networking.c
-
-ui.o: ui.c
-	@gcc -c -Wall ui.c
+$(CLIENT_OBJECTS) : $(CLIENT_FILES) $(H_FILES)
+	@gcc -c -Wall $(CLIENT_FILES)
 
 clean:
 	rm -rf *.o client server
