@@ -12,3 +12,14 @@ Add proposal to repo and change my devlog.
 
 ### 2026-01-07 - UI/ncurses testing: 2 hours
 Experimenting with ncurses and 
+
+### 2026-01-08 - Fixing bugs with UI and merges: 3 hours
+Moved everything that draws the chatbox into a seperate function and tried to make the chatbox take up less space, but we ended up just keeping it fullsize until we moved on.
+
+### 2026-01-09 - Adding features to chatbox : 1 hour
+Helped alex with debugging; computer was really slow.
+
+### 2026-01-13 - Fixed one liner that crashed program: 3 hours
+Added a - 1 to index of the chat messages array.
+
+### 
