@@ -19,7 +19,10 @@ Moved everything that draws the chatbox into a seperate function and tried to ma
 ### 2026-01-09 - Adding features to chatbox : 1 hour
 Helped alex with debugging; computer was really slow.
 
-### 2026-01-13 - Fixed one liner that crashed program: 3 hours
+### 2026-01-12 - Fixed one liner that crashed program: 3 hours
 Added a - 1 to index of the chat messages array.
 
-### 
+### 2026-01-13 - Enabled keypad for cursor movement and resize check: 3 hours
+Added a resize check that clears the screen
+enabled keypad for cursor movement so that it doesnt just print random characters
+Move cursor around the input line according to left and right arrow keys
