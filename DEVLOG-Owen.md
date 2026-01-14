@@ -24,3 +24,6 @@ Fixed one liner that caused an indexing error
 
 ### 2026-01-12 - Added resize detection and cursor movement: 3 hours
 Added a key_resize detection to clear and cursor left right movement
+
+### 2026-01-13 - Helping to fix and restore changes - 1.5 hours
+I messed up a merge and it causes a bunch of version issues, so i had to fix and restore my previous code from yesterday.
