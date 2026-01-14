@@ -1,13 +1,19 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
+#define NAME_LENGTH 32
+
+#define MAX_MESSAGE 512
+
+
 struct message{
 	char *username;
 	char *message;
-	struct message *prev;
+	long long int id;
 };
 
 struct message *makeMessage(char *username, char *message);
+
 void freeMsg(struct message *m);
 
 

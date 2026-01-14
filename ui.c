@@ -125,6 +125,7 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user,
     start = 0;
   else
     start = chat_count - max;
+	
 
   char *thing = malloc(256);
   for (int i = start; i < chat_count; i++) {
