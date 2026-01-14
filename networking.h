@@ -16,7 +16,7 @@
 #include <ncurses.h>
 
 #define PORT "19230"
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 256
 
 void err(int i, char*message);
 int server_setup();

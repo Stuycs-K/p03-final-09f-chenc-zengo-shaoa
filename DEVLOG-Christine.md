@@ -16,5 +16,9 @@ Completed server using select(). Refactored ui.c into separate functions called 
 ### 2026-01-09 - Minor Mods + Basic Chat History
 Modified makefile and added error checks for select(). Implemented a basic janky chat history to display messages sent from other clients.
 
-## 2026-01-11 - Fix Bug
+### 2026-01-11 - Fix Bug
 Fixed very minor bug fix in client that prevented clients on different machines from connecting properly.
+
+### 2026-01-12 - Message Struct
+Completed helper functions for struct + minor fixes to struct.
+
