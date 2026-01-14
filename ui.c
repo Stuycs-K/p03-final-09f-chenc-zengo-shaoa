@@ -6,6 +6,7 @@ void init_ui() {
   noecho();              // Don't display keys when they are typed
   nodelay(stdscr, true); // Set up non-blocking input with getch()
   curs_set(true);
+  keypad(stdscr, true);
 }
 
 // Helper function to implement UI structure elements on the client
@@ -39,14 +40,15 @@ void create_name_page(char *input, int height, int width) {
   mvprintw(height / 2, 20, " Enter username: %s", input);
 }
 
-char setup_name_page(char *input, int *input_len, char *name,
-                     int server_socket) {
+char setup_name_page(char *input, int *input_len, char *name, int server_socket,
+                     int *cursor) {
   int height, width;
   getmaxyx(stdscr, height, width);
   create_name_page(input, height, width);
+  move(height / 2, 37 + *cursor);
   refresh();
   strcpy(name, input);
-  char c = input_detect(input, input_len, 0, server_socket, 1, name);
+  char c = input_detect(input, input_len, cursor, server_socket, 1, name);
   return c;
 }
 
@@ -71,30 +73,40 @@ char input_detect(char *input, int *input_len, int *cursor, int server_socket,
         }
         input[*input_len] = '\0';
         *input_len = 0;
+        *cursor = 0;
         memset(input, 0, BUFFER_SIZE);
         clear();
         return 1;
       }
+    } else if (c == KEY_LEFT) {
+      if (*cursor > 0)
+        (*cursor)--;
+    } else if (c == KEY_RIGHT) {
+      if (*cursor < *input_len)
+        (*cursor)++;
     } else if (c == KEY_BACKSPACE || c == 127) { // backspace or delete
-      if (*input_len > 0) {
+      if (*input_len > 0 && *cursor > 0) {
+        memmove(input + *cursor - 1, input + *cursor, *input_len - *cursor);
         (*input_len)--;
-        cursor--;
+        (*cursor)--;
         input[*input_len] = '\0';
         clear();
       }
     } else if (c == KEY_RESIZE) {
       clear();
     } else if (c >= ' ' && c <= '~' && *input_len < BUFFER_SIZE - 1) {
-      input[(*input_len)++] = c;
+      memmove(input + *cursor + 1, input + *cursor, *input_len - *cursor);
+      input[*cursor] = c;
+      (*input_len)++;
+      (*cursor)++;
       input[*input_len] = '\0';
-      cursor++;
     }
   }
   return 0;
 }
 
-void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count,
-              char *user) { // setup one frame
+void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user,
+              int cursor) { // setup one frame
                             // clear();
 
   int height, width;
@@ -130,6 +142,7 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count,
   mvprintw(height - 3, 2, "Start chat: %s", chat[start]);
 
   mvprintw(chat_height + 1, 2, "> %s", input);
+  move(chat_height + 1, 4 + cursor);
   refresh();
 }
 

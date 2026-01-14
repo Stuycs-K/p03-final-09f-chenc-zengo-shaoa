@@ -69,7 +69,8 @@ void clientLogic(int server_socket) {
   char user_name[32];
 
   // Naming the client
-  while (!setup_name_page(input, &input_len, user_name, server_socket)) {
+  while (
+      !setup_name_page(input, &input_len, user_name, server_socket, &cursor)) {
   }
 
   while (1) {
@@ -78,7 +79,7 @@ void clientLogic(int server_socket) {
 
     selectLogic(server_socket, &read_fds, buff);
 
-    setup_ui(input, chat, chat_count, user_name);
+    setup_ui(input, chat, chat_count, user_name, cursor);
   }
 }
 
