@@ -94,6 +94,7 @@ char input_detect(char *input, int *input_len, int *cursor, int server_socket,
       }
     } else if (c == KEY_RESIZE) {
       clear();
+      printf("resized");
     } else if (c >= ' ' && c <= '~' && *input_len < BUFFER_SIZE - 1) {
       memmove(input + *cursor + 1, input + *cursor, *input_len - *cursor);
       input[*cursor] = c;
