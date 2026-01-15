@@ -27,3 +27,6 @@ Added a key_resize detection to clear and cursor left right movement
 
 ### 2026-01-13 - Helping to fix and restore changes - 1.5 hours
 I messed up a merge and it causes a bunch of version issues, so i had to fix and restore my previous code from yesterday.
+
+### 2026-01-14 - Fixed resize clearing all the time - 30 minutes
+Fixed a bug where window resize events (SIGWINCH) were interrupting the select() which cleared the UI.
