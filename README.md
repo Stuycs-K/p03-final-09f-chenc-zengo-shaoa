@@ -11,7 +11,11 @@ This project is a chat room program where users can create and connect to multip
 
 ### Instructions:
 
-+ TODO: How does the user install/compile/run the program. (CHANGE THIS!!!!!)
+- Clone the program from [Final Project](https://github.com/Stuycs-K/p03-final-09f-chenc-zengo-shaoa)
+- Then run "make compile"
+- In one terminal/machine run "make server"
+- After creating the servers, on a different terminal or machine you can run the program by running "make compile" and "make client" to connect to the server
+- Once connected, you should give a user name to be identified by, and then you can type to your chatroom.
 
 Interaction (Subject to change)
 
