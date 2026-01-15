@@ -130,7 +130,7 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user,
   for (int i = start; i < chat_count && row < chat_height - 1; i++) {
     int offset = 0;
     while (offset < strlen(chat[i]) && row < chat_height - 1) {
-      mvprintw(row, 2, "%.*s", width - 4, chat[i] + offset);
+      mvaddnstr(row, 2, chat[i] + offset, width - 4); // to block overflow
       offset += width - 4;
       row++;
     }

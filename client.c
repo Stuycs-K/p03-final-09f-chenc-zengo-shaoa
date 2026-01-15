@@ -44,7 +44,12 @@ void selectLogic(int server_socket, fd_set *read_fds, char *buff) {
 				strcat(chat[chat_count], buff);
 
 				chat[chat_count][MAX_MSG_LEN - 1] = '\0';
-				chat_count++;
+
+        // remove newline
+        char *nl = strchr(chat[chat_count], '\n');
+        if (nl) *nl = '\0';
+
+        chat_count++;
 				memset(chat[chat_count], 0, MAX_MSG_LEN-1);
 			}
 		}
