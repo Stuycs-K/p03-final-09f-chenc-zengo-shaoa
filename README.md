@@ -7,7 +7,7 @@ Roster: **Alex Shao, Owen Zeng, Christine Chen**
 
 ### Project Description:
 
-This project is a **chat room program** where users can connect to a chat room, create an alias, and send messages concurrently with access to arrow key and scrollwheel navigation.
+This project is a **chat room program** where users can connect to a chat room, create an alias, and send messages concurrently with access to arrow key and scrollwheel navigation. Users may also resize the chat room at any time.
 
 *We ended up removing the multiple chat room function of our project in order to focus on a better implementation of one chat room.*
 
