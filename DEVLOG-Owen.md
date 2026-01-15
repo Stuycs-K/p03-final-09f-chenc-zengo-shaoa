@@ -29,5 +29,5 @@ Added a key_resize detection to clear and cursor left right movement
 I messed up a merge and it causes a bunch of version issues, so i had to fix and restore my previous code from yesterday.
 
 ### 2026-01-14 - Fixed resize clearing all the time, also adding up and down arrow keys to scroll messages- 2 hours
-Fixed a bug where window resize events (SIGWINCH) were interrupting the select() which cleared the UI. Also added up and down arrow keys to scroll messages.
+Fixed a bug where window resize events (SIGWINCH) were interrupting the select() which cleared the UI. Added up and down arrow keys to scroll messages.
 
