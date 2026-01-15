@@ -126,12 +126,15 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user,
   else
     start = chat_count - max;
 
-  char *thing = malloc(256);
-  for (int i = start; i < chat_count; i++) {
-    strcpy(thing, chat[i]);
-    mvprintw(2 + i - start, 2, "%s", thing);
+  int row = 2;
+  for (int i = start; i < chat_count && row < chat_height - 1; i++) {
+    int offset = 0;
+    while (offset < strlen(chat[i]) && row < chat_height - 1) {
+      mvprintw(row, 2, "%.*s", width - 4, chat[i] + offset);
+      offset += width - 4;
+      row++;
+    }
   }
-  free(thing);
   /*
    */
 
@@ -141,8 +144,23 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user,
   mvprintw(height - 4, 2, "User_name: %s", user);
   mvprintw(height - 3, 2, "Start chat: %s", chat[start]);
 
-  mvprintw(chat_height + 1, 2, "> %s", input);
-  move(chat_height + 1, 4 + cursor);
+  int max_input = width - 6;
+  int input_len = strlen(input);
+  int input_start = 0;
+
+  if (input_len > max_input) {
+    input_start = input_len - max_input;
+  }
+  mvprintw(chat_height + 1, 2, "> %.*s", max_input, input + input_start);
+
+  int cursor_x = 4 + cursor - input_start;
+  if (cursor_x < 4) {
+    cursor_x = 4;
+  }
+  if (cursor_x >= width - 1) {
+    cursor_x = width - 2;
+  }
+  move(chat_height + 1, cursor_x);
   refresh();
 }
 
