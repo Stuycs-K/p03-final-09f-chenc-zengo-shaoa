@@ -1,13 +1,17 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/QfAIDTGi)
-# Chat
+# Project Name: Chat
 
-### ACO
+### Team Name: ACO
 
-Alex Shao, Owen Zeng, Christine Chen
+Roster: **Alex Shao, Owen Zeng, Christine Chen**
 
 ### Project Description:
 
-This project is a chat room program where users can create and connect to multiple named individual chat rooms.
+This project is a **chat room program** where users can connect to a chat room, create an alias, and send messages concurrently with access to arrow key and scrollwheel navigation.
+
+*We ended up removing the multiple chat room function of our project in order to focus on a better implementation of one chat room.*
+
+### Video Link:
 
 ### Instructions:
 
