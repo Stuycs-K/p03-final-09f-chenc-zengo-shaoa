@@ -141,12 +141,6 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user,
   if (end > chat_count)
     end = chat_count;
 
-<<<<<<< HEAD
-  char *thing = malloc(256);
-  for (int i = start; i < end; i++) {
-    strcpy(thing, chat[i]);
-    mvprintw(2 + i - start, 2, "%s", thing);
-=======
   int row = 2;
   for (int i = start; i < chat_count && row < chat_height - 1; i++) {
     int offset = 0;
@@ -155,7 +149,6 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user,
       offset += width - 4;
       row++;
     }
->>>>>>> main
   }
   /*
    */
