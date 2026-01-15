@@ -46,15 +46,21 @@ void selectLogic(int server_socket, fd_set *read_fds, char *buff) {
         // strncpy(chat[chat_count], buff, MAX_MSG_LEN - 1);
         strcat(chat[chat_count], buff);
 
-        chat[chat_count][MAX_MSG_LEN - 1] = '\0';
+				chat[chat_count][MAX_MSG_LEN - 1] = '\0';
+
+        // remove newline
+        char *nl = strchr(chat[chat_count], '\n');
+        if (nl) *nl = '\0';
+
         chat_count++;
-        memset(chat[chat_count], 0, MAX_MSG_LEN - 1);
-      }
-    } else if (bytes > 0) {
-      strcat(chat[chat_count], buff);
-      selectLogic(server_socket, read_fds, buff);
-    }
-  }
+				memset(chat[chat_count], 0, MAX_MSG_LEN-1);
+			}
+		}
+		else if (bytes > 0) {
+			strcat(chat[chat_count], buff);
+			selectLogic(server_socket, read_fds, buff);
+		}
+	}
 }
 
 void clientLogic(int server_socket) {
