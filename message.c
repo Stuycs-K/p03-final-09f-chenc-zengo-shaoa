@@ -7,12 +7,13 @@ struct message *makeMessage(char *username, char *message) {
   struct message *m = malloc(sizeof(struct message));
   if (!m) return NULL;
 
-  m->username = strdup(username);
-  m->message = strdup(message);
-  m->prev = NULL;
+	m->username = malloc(NAME_LENGTH);
+  m->message = malloc(MAX_MESSAGE);
 
   return m;
 }
+
+
 
 void freeMsg(struct message *m) {
   if (!m) return;

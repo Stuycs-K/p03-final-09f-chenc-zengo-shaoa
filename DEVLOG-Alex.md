@@ -25,5 +25,10 @@ This document must be updated daily every time you finish a work session.
 ### 2026-01-11 - Client side name
 	Added a username for the client. Made a start UI for user input of username
 
-### 2026-01-11 - Debugging chat history & starting new message.c
+### 2026-01-12 - Debugging chat history & starting new message.c
 	Added message.c, message.h (to be worked on) and tried to resolve the chat printing only 8 characters at a time.
+
+### 2026-01-13 - Fixing problems from Owen's faulty merge, remaking makefile
+	Re-implemented older code base and rewrote the makefile for added compilation and linking.	
+		
+### 2026-01-14 -
