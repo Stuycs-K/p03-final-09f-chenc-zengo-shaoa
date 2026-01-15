@@ -48,13 +48,13 @@ char setup_name_page(char *input, int *input_len, char *name, int server_socket,
   move(height / 2, 37 + *cursor);
   refresh();
   strcpy(name, input);
-  char c = input_detect(input, input_len, cursor, server_socket, 1, name);
+  char c = input_detect(input, input_len, cursor, server_socket, 1, name, NULL);
   return c;
 }
 
 // Detects input using ncurses
 char input_detect(char *input, int *input_len, int *cursor, int server_socket,
-                  char mode, char *user) {
+                  char mode, char *user, int *scroll_offset) {
   int c = getch();
   if (c != ERR) {
     if (c == 9) { // tab as escape sequence
@@ -70,6 +70,8 @@ char input_detect(char *input, int *input_len, int *cursor, int server_socket,
           sprintf(send, "%s: %s\n", user, input);
           int leng = strlen(user) + *input_len + 3;
           write(server_socket, send, leng);
+          if (scroll_offset)
+            *scroll_offset = 0;
         }
         input[*input_len] = '\0';
         *input_len = 0;
@@ -84,6 +86,12 @@ char input_detect(char *input, int *input_len, int *cursor, int server_socket,
     } else if (c == KEY_RIGHT) {
       if (*cursor < *input_len)
         (*cursor)++;
+    } else if (c == KEY_UP) {
+      if (scroll_offset)
+        (*scroll_offset)++;
+    } else if (c == KEY_DOWN) {
+      if (scroll_offset && *scroll_offset > 0)
+        (*scroll_offset)--;
     } else if (c == KEY_BACKSPACE || c == 127) { // backspace or delete
       if (*input_len > 0 && *cursor > 0) {
         memmove(input + *cursor - 1, input + *cursor, *input_len - *cursor);
@@ -106,8 +114,8 @@ char input_detect(char *input, int *input_len, int *cursor, int server_socket,
 }
 
 void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user,
-              int cursor) { // setup one frame
-                            // clear();
+              int cursor, int scroll_offset) { // setup one frame
+                                               // clear();
 
   int height, width;
   getmaxyx(stdscr, height, width);
@@ -121,14 +129,20 @@ void setup_ui(char *input, char chat[][MAX_MSG_LEN], int chat_count, char *user,
   move(10, 10);
 
   mvprintw(1, 2, " Chat History ");
-  if (chat_count < max)
-    start = 0;
-  else
-    start = chat_count - max;
-	
+  int max_scroll = (chat_count > max) ? (chat_count - max) : 0;
+  if (scroll_offset > max_scroll)
+    scroll_offset = max_scroll;
+  if (scroll_offset < 0)
+    scroll_offset = 0;
+
+  start = max_scroll - scroll_offset;
+
+  int end = start + max;
+  if (end > chat_count)
+    end = chat_count;
 
   char *thing = malloc(256);
-  for (int i = start; i < chat_count; i++) {
+  for (int i = start; i < end; i++) {
     strcpy(thing, chat[i]);
     mvprintw(2 + i - start, 2, "%s", thing);
   }

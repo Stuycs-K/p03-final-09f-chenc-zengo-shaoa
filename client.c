@@ -21,38 +21,40 @@ void selectLogic(int server_socket, fd_set *read_fds, char *buff) {
   tv.tv_sec = 0;
   tv.tv_usec = 10000; // 10ms
 
-	if (select(server_socket+1, read_fds, NULL, NULL, &tv) == -1) {
-		perror("select error");
-		end_ui();
-		close(server_socket);
-		return;
-	}
-	// socket (receive msg)
-	if (FD_ISSET(server_socket, read_fds)) {
-		bytes = read(server_socket, buff, sizeof(buff));
-		if (bytes <= 0) {
-			end_ui();
-			close(server_socket);
-			fprintf(stderr, "Socket Read Error (Bytes read: %d)", bytes);
-			exit(0);
-		}
-		if(strchr(buff, '\n')){
-			buff[bytes] = '\0';
-			if (chat_count < MAX_MSG && bytes > 0) {
-				//memset(chat[chat_count], 0, MAX_MSG_LEN-1);
-				//strncpy(chat[chat_count], buff, MAX_MSG_LEN - 1);
-				strcat(chat[chat_count], buff);
+  if (select(server_socket + 1, read_fds, NULL, NULL, &tv) == -1) {
+    if (errno == EINTR) {
+      return;
+    }
+    perror("select error");
+    end_ui();
+    close(server_socket);
+    exit(1);
+  }
+  // socket (receive msg)
+  if (FD_ISSET(server_socket, read_fds)) {
+    bytes = read(server_socket, buff, sizeof(buff));
+    if (bytes <= 0) {
+      end_ui();
+      close(server_socket);
+      fprintf(stderr, "Socket Read Error (Bytes read: %d)", bytes);
+      exit(0);
+    }
+    if (strchr(buff, '\n')) {
+      buff[bytes] = '\0';
+      if (chat_count < MAX_MSG && bytes > 0) {
+        // memset(chat[chat_count], 0, MAX_MSG_LEN-1);
+        // strncpy(chat[chat_count], buff, MAX_MSG_LEN - 1);
+        strcat(chat[chat_count], buff);
 
-				chat[chat_count][MAX_MSG_LEN - 1] = '\0';
-				chat_count++;
-				memset(chat[chat_count], 0, MAX_MSG_LEN-1);
-			}
-		}
-		else if (bytes > 0) {
-			strcat(chat[chat_count], buff);
-			selectLogic(server_socket, read_fds, buff);
-		}
-	}
+        chat[chat_count][MAX_MSG_LEN - 1] = '\0';
+        chat_count++;
+        memset(chat[chat_count], 0, MAX_MSG_LEN - 1);
+      }
+    } else if (bytes > 0) {
+      strcat(chat[chat_count], buff);
+      selectLogic(server_socket, read_fds, buff);
+    }
+  }
 }
 
 void clientLogic(int server_socket) {
@@ -65,6 +67,7 @@ void clientLogic(int server_socket) {
   int input_len = 0;
   memset(input, 0, BUFFER_SIZE);
   int cursor = 0;
+  int scroll_offset = 0;
 
   char user_name[32];
 
@@ -75,11 +78,12 @@ void clientLogic(int server_socket) {
 
   while (1) {
     // INPUT DETECT: handles all inputs; see ui.c for implementation
-    input_detect(input, &input_len, &cursor, server_socket, 0, user_name);
+    input_detect(input, &input_len, &cursor, server_socket, 0, user_name,
+                 &scroll_offset);
 
     selectLogic(server_socket, &read_fds, buff);
 
-    setup_ui(input, chat, chat_count, user_name, cursor);
+    setup_ui(input, chat, chat_count, user_name, cursor, scroll_offset);
   }
 }
 
