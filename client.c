@@ -67,6 +67,7 @@ void clientLogic(int server_socket) {
   int input_len = 0;
   memset(input, 0, BUFFER_SIZE);
   int cursor = 0;
+  int scroll_offset = 0;
 
   char user_name[32];
 
@@ -77,11 +78,12 @@ void clientLogic(int server_socket) {
 
   while (1) {
     // INPUT DETECT: handles all inputs; see ui.c for implementation
-    input_detect(input, &input_len, &cursor, server_socket, 0, user_name);
+    input_detect(input, &input_len, &cursor, server_socket, 0, user_name,
+                 &scroll_offset);
 
     selectLogic(server_socket, &read_fds, buff);
 
-    setup_ui(input, chat, chat_count, user_name, cursor);
+    setup_ui(input, chat, chat_count, user_name, cursor, scroll_offset);
   }
 }
 
