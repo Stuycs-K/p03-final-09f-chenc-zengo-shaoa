@@ -87,9 +87,11 @@ char input_detect(char *input, int *input_len, int *cursor, int server_socket,
       if (*cursor < *input_len)
         (*cursor)++;
     } else if (c == KEY_UP) {
+      clear();
       if (scroll_offset)
         (*scroll_offset)++;
     } else if (c == KEY_DOWN) {
+      clear();
       if (scroll_offset && *scroll_offset > 0)
         (*scroll_offset)--;
     } else if (c == KEY_BACKSPACE || c == 127) { // backspace or delete
