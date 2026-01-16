@@ -31,4 +31,10 @@ This document must be updated daily every time you finish a work session.
 ### 2026-01-13 - Fixing problems from Owen's faulty merge, remaking makefile
 	Re-implemented older code base and rewrote the makefile for added compilation and linking.	
 		
-### 2026-01-14 -
+### 2026-01-14 - Adding server name
+	Adding server naming and changed message structure, planned out message id for communication between client and server.
+
+### 2026-01-15 - making a video
+	Recorded a video, edited and uploaded.
+
+

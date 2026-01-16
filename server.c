@@ -22,9 +22,23 @@ void subserver_logic(int client_soc, int listen_soc, fd_set *all_fds, int max) {
 int main(int argc, char *argv[] ) {
   int listen_soc = server_setup();
   fd_set read_fds, all_fds;
+
   FD_ZERO(&all_fds);
   FD_SET(listen_soc, &all_fds);
   int max = listen_soc; // track for select call
+
+	char save_chat[32]; // where to save the chat
+	for(int i = 0; strlen(save_chat) < 2; i++){
+		if(i > 0){
+			fprintf(stdout, "Invalid name! Must be 2+ characters\n");
+			sleep(1);
+		}
+		fprintf(stdout, "Enter the chat name: ");
+		fflush(stdout);
+		fgets(save_chat, 32, stdin);
+	}
+
+
 
   while (1) {
     // copy into read_fds

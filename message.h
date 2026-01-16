@@ -12,7 +12,7 @@ struct message{
 	long long int id;
 };
 
-struct message *makeMessage(char *username, char *message);
+struct message *makeMessage(char *username, char *message, long long int id);
 
 void freeMsg(struct message *m);
 
